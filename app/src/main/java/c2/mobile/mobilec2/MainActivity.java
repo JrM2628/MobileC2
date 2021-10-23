@@ -9,10 +9,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     /**
@@ -36,33 +38,39 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         new Thread(conn).start();
 
-        EditText command = (EditText)findViewById(R.id.command);
-        Button getCommand = (Button)findViewById(R.id.SendCommand);
+        EditText command = (EditText) findViewById(R.id.command);
+        Button getCommand = (Button) findViewById(R.id.SendCommand);
         getCommand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String cmd = command.getText().toString();
                 CommandDatabase commandDatabase = new CommandDatabase(getApplicationContext());
-                SQLiteDatabase db = commandDatabase.getWritableDatabase();
 
                 // Create a new map of values, where column names are the keys
-                ContentValues values = new ContentValues();
-                values.put(BotEntryContract.BotEntry.uuid, "test");
-                values.put(BotEntryContract.BotEntry.command, cmd);
-                values.put(BotEntryContract.BotEntry.output, "");
-
-                // Insert the new row, returning the primary key value of the new row
-                long newRowId = db.insert(BotEntryContract.BotEntry.tablename, null, values);
+                // TODO: change to get uuid and output passed in from client
+                boolean bool = commandDatabase.insertIntoDatabase("ahhhhhhhh4123", cmd, "blah");
+                ArrayList<String> list = commandDatabase.getFromDatabase("ahhhhhhhh4123", BotEntryContract.BotEntry.command);
+                for (String item : list) {
+                    Toast.makeText(getApplicationContext(), item, Toast.LENGTH_LONG).show();
+                }
+                if (bool) {
+                    Toast.makeText(getApplicationContext(), "Completed successfully :D", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    commandDatabase.updateDatabase("ahhhhhhhh4123", cmd, "blah2");
+                    ArrayList<String> list2 = commandDatabase.getFromDatabase("ahhhhhhhh4123", BotEntryContract.BotEntry.command);
+                    for (String item : list2) {
+                        Toast.makeText(getApplicationContext(), item, Toast.LENGTH_LONG).show();
+                    }
+                }
             }
         });
-
 
         /*
         Context context = getApplicationContext();
