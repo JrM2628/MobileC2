@@ -95,9 +95,11 @@ public class CommandDatabase extends SQLiteOpenHelper {
 
     public void updateDatabase(String uuid, String command, String output) {
         // TODO: change this to be json string for cmd and output
-        // String command, output = convertToJson(command, output);
-        // values.put(BotEntryContract.BotEntry.command, command);
-        // values.put(BotEntryContract.BotEntry.output, output);
+        // ArrayList commands = getFromDatabase(command);
+        // ArrayList outputs = getFromDatabase(output);
+        // String cmd, out = convertToJson(commands, outputs);
+        // values.put(BotEntryContract.BotEntry.command, cmd);
+        // values.put(BotEntryContract.BotEntry.output, out);
 
         ContentValues values = new ContentValues();
 
