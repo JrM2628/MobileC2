@@ -2,28 +2,17 @@ package c2.mobile.mobilec2;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
+import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.ConnectivityManager;
-import android.net.Network;
-import android.net.NetworkCapabilities;
-import android.net.NetworkRequest;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.URLConnection;
 
 public class MainActivity extends AppCompatActivity {
     /**
@@ -47,10 +36,6 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    public void DBCreate(){
-        SQLiteDatabase SQLITEDATABASE = openOrCreateDatabase("DemoDataBase", Context.MODE_PRIVATE, null);
-        SQLITEDATABASE.execSQL("CREATE TABLE IF NOT EXISTS demoTable(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR, phone_number VARCHAR, subject VARCHAR);");
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,12 +44,22 @@ public class MainActivity extends AppCompatActivity {
         new Thread(conn).start();
 
         EditText command = (EditText)findViewById(R.id.command);
-        Button getCommand = (Button)findViewById(R.id.GetCommand);
+        Button getCommand = (Button)findViewById(R.id.SendCommand);
         getCommand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DBCreate();
-                SubmitData2SQLiteDB();
+                String cmd = command.getText().toString();
+                CommandDatabase commandDatabase = new CommandDatabase(getApplicationContext());
+                SQLiteDatabase db = commandDatabase.getWritableDatabase();
+
+                // Create a new map of values, where column names are the keys
+                ContentValues values = new ContentValues();
+                values.put(BotEntryContract.BotEntry.uuid, "test");
+                values.put(BotEntryContract.BotEntry.command, cmd);
+                values.put(BotEntryContract.BotEntry.output, "");
+
+                // Insert the new row, returning the primary key value of the new row
+                long newRowId = db.insert(BotEntryContract.BotEntry.tablename, null, values);
             }
         });
 
