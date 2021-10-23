@@ -25,12 +25,12 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Called when the activity is first created.
      */
-    private static String TAG = "ServerSocketTest";
+    private static final String TAG = "ServerSocketTest";
     private ServerSocket server;
     Runnable conn = new Runnable() {
         public void run() {
             try {
-                server = new ServerSocket(53000);
+                server = new ServerSocket(25565);
                 while (true) {
                     Socket socket = server.accept();
                     new C2ClientThread(socket).start();

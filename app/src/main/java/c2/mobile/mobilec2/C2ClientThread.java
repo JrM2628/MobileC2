@@ -9,11 +9,13 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.UUID;
 
 public class C2ClientThread extends Thread {
     private Socket socket;
     private BufferedReader in;
     private PrintWriter out;
+    private UUID uuid; // placeholder
 
     public C2ClientThread(Socket socket) {
         super("C2ClientThread");
@@ -21,6 +23,7 @@ public class C2ClientThread extends Thread {
         try {
             this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+            uuid = UUID.randomUUID();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -28,13 +31,13 @@ public class C2ClientThread extends Thread {
 
     @Override
     public void run() {
-        while(true){
+        while (true){
             String str = null;
             try {
                 str = in.readLine();
                 if(str != null){
                     Log.i("received response from server", str);
-                    out.println("Echo: " + str);
+                    out.println("Echo " + uuid.toString() + ": " + str);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -48,6 +51,7 @@ public class C2ClientThread extends Thread {
             in.close();
             socket.close();
         } catch (IOException e) {
+            //
         }
     }
 }
