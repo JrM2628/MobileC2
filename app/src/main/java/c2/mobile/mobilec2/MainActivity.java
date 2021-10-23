@@ -3,12 +3,16 @@ package c2.mobile.mobilec2;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkRequest;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -43,12 +47,27 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    public void DBCreate(){
+        SQLiteDatabase SQLITEDATABASE = openOrCreateDatabase("DemoDataBase", Context.MODE_PRIVATE, null);
+        SQLITEDATABASE.execSQL("CREATE TABLE IF NOT EXISTS demoTable(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR, phone_number VARCHAR, subject VARCHAR);");
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         new Thread(conn).start();
+
+        EditText command = (EditText)findViewById(R.id.command);
+        Button getCommand = (Button)findViewById(R.id.GetCommand);
+        getCommand.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DBCreate();
+                SubmitData2SQLiteDB();
+            }
+        });
+
 
         /*
         Context context = getApplicationContext();

