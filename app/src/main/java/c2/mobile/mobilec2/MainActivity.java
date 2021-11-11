@@ -3,6 +3,7 @@ package c2.mobile.mobilec2;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
@@ -38,6 +39,17 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
+
+
+    public void viewOutput(View v){
+        EditText uuidEditText = (EditText) findViewById(R.id.uuidEditText);
+        String uuid = uuidEditText.getText().toString();
+        Intent i = new Intent(this, DisplayOutput.class);
+        Log.e("UUID: ", uuid);
+        i.putExtra("uuid", uuid);
+        startActivity(i);
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
                 */
             }
         });
+
 
         /*
         Context context = getApplicationContext();
