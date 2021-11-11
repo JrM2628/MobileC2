@@ -94,16 +94,17 @@ public class CommandDatabase extends SQLiteOpenHelper {
     }
 
     public void updateDatabase(String uuid, String command, String output) {
-        // TODO: change this to be json string for cmd and output
-        // ArrayList commands = getFromDatabase(command);
-        // ArrayList outputs = getFromDatabase(output);
-        // String cmd, out = convertToJson(commands, outputs);
-        // values.put(BotEntryContract.BotEntry.command, cmd);
-        // values.put(BotEntryContract.BotEntry.output, out);
-
         ContentValues values = new ContentValues();
 
-        // TODO: add implementation for multiple bots
+        /*
+            Each entry in the db has a string for the most recent command
+            If there is a command there, it hasn't been sent to the client yet
+            If there is no command there, it has EITHER been sent to the client or no command has been given yet
+                (or db has just been created)
+            If there is no output, a command has not been executed yet
+            If there is output, a command has been executed (and output should be displayed in C2)
+            😎🔥
+         */
         values.put(BotEntryContract.BotEntry.command, command);
         values.put(BotEntryContract.BotEntry.output, output);
 

