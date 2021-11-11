@@ -70,9 +70,6 @@ public class CommandDatabase extends SQLiteOpenHelper {
                 BotEntryContract.BotEntry.uuid
         };
 
-        //String selection = BotEntryContract.BotEntry.uuid + " = ?";
-        //String[] selectionArgs = { "*" };
-
         Cursor cursor = dbread.query(
                 BotEntryContract.BotEntry.tablename,
                 projection,
