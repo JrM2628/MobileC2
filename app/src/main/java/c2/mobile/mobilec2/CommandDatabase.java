@@ -62,6 +62,39 @@ public class CommandDatabase extends SQLiteOpenHelper {
 
     }
 
+    public ArrayList<String> getUUIDsFromDatabase(){
+        //SELECT uuid FROM tablename
+        //WHERE uuid=*
+
+        String[] projection = {
+                BotEntryContract.BotEntry.uuid
+        };
+
+        //String selection = BotEntryContract.BotEntry.uuid + " = ?";
+        //String[] selectionArgs = { "*" };
+
+        Cursor cursor = dbread.query(
+                BotEntryContract.BotEntry.tablename,
+                projection,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        ArrayList<String> itemIds = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            String itemId = cursor.getString(
+                    cursor.getColumnIndexOrThrow(BotEntryContract.BotEntry.uuid)
+            );
+            itemIds.add(itemId);
+        }
+        cursor.close();
+        return itemIds;
+    }
+
+
     public ArrayList<String> getFromDatabase(String uuid, String type) {
         String[] projection = {
             BotEntryContract.BotEntry.uuid,

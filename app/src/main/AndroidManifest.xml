@@ -14,6 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MobileC2">
         <activity
+            android:name=".ViewBotList"
+            android:exported="true" />
+        <activity
             android:name=".DisplayOutput"
             android:exported="true" />
         <activity

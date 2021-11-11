@@ -66,4 +66,12 @@ public class MainActivity extends AppCompatActivity {
         i.putExtra("uuid", uuid);
         startActivity(i);
     }
+
+    public void goToBotList (View v) {
+        Intent i = new Intent(this, ViewBotList.class);
+        startActivity(i);
+    }
+
+
+
 }
