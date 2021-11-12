@@ -2,18 +2,15 @@ package c2.mobile.mobilec2;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
-import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -39,39 +36,47 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+
     @Override
-    protected void onCreate (Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        Log.e("context: ", getApplicationContext().toString());
+
         new Thread(conn).start();
         commandDatabase = new CommandDatabase(getApplicationContext());
+
+        createBotList();
     }
 
-    public void addCommandToDatabase(View v) {
-        EditText command = (EditText) findViewById(R.id.command);
-        EditText uuidEditText = (EditText) findViewById(R.id.uuidEditText);
+    public void createBotList() {
+        ScrollView scrollView = new ScrollView(this);
+        final LinearLayout ll = new LinearLayout(this);
+        ll.setOrientation(LinearLayout.VERTICAL);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.setMargins(100, 25, 100, 0);
+        scrollView.addView(ll);
 
-        String cmd = command.getText().toString();
-        String uuid = uuidEditText.getText().toString();
+        CommandDatabase commandDatabase = new CommandDatabase(this.getApplicationContext());
+        ArrayList<String> uuids = commandDatabase.getUUIDsFromDatabase();
+        for(int i = 0; i < uuids.size(); i++){
+            String uuid = uuids.get(i);
 
-        commandDatabase.updateDatabase(uuid, cmd, "");
+            Button add_btn = new Button(this);
+            add_btn.setText(uuid);
+            ll.addView(add_btn, layoutParams);
+
+            add_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(), SendCommand.class);
+                    intent.putExtra("uuid", uuid);
+                    startActivity(intent);
+                }
+            });
+            this.setContentView(scrollView);
+        }
     }
-
-    public void viewOutput (View v) {
-        EditText uuidEditText = (EditText) findViewById(R.id.uuidEditText);
-        String uuid = uuidEditText.getText().toString();
-
-        Intent i = new Intent(this, DisplayOutput.class);
-        Log.e("UUID: ", uuid);
-        i.putExtra("uuid", uuid);
-        startActivity(i);
-    }
-
-    public void goToBotList (View v) {
-        Intent i = new Intent(this, ViewBotList.class);
-        startActivity(i);
-    }
-
 
 
 }

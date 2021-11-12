@@ -3,8 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Kayla/StudioProjects/MobileC2/app/src/main/res/layout/SendCommand.xml" value="0.33" />
         <entry key="..\:/Users/Kayla/StudioProjects/MobileC2/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/Users/Kayla/StudioProjects/MobileC2/app/src/main/res/layout/activity_output.xml" value="0.33" />
+        <entry key="..\:/Users/Kayla/StudioProjects/MobileC2/app/src/main/res/layout/activity_send_command.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/Kayla/StudioProjects/MobileC2/app/src/main/res/layout/activity_view_bot_list.xml" value="0.17395833333333333" />
       </map>
     </option>
   </component>

@@ -18,7 +18,7 @@ public class DisplayOutput extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_output);
         TextView uuidDisplay = (TextView) findViewById(R.id.uuidDisplay);
-        TextView outputText = (TextView) findViewById(R.id.outputText);
+        TextView outputTextView = (TextView) findViewById(R.id.outputTextView);
 
         uuidDisplay.setAutoSizeTextTypeWithDefaults(TextView.AUTO_SIZE_TEXT_TYPE_UNIFORM);
 
@@ -30,7 +30,13 @@ public class DisplayOutput extends AppCompatActivity {
         if(outputList.size() > 0){
             String output = outputList.get(0);
             uuidDisplay.setText(uuid);
-            outputText.setText(output);
+            outputTextView.setText(output);
         }
+        else {
+            String blah = "testing";
+            uuidDisplay.setText(uuid);
+            outputTextView.setText(blah);
+        }
+
     }
 }
