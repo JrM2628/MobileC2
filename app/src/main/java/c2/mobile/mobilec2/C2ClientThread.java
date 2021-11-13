@@ -50,6 +50,7 @@ public class C2ClientThread extends Thread {
                             break;
                         case "set-uuid":
                             String uuidString = in.readLine();
+                            Log.e("RECV UUID: ", uuidString);
                             this.uuid = UUID.fromString(uuidString);
                             Log.e("Set UUID", uuid.toString());
                             break;

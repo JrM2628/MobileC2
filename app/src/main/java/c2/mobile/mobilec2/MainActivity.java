@@ -73,6 +73,20 @@ public class MainActivity extends AppCompatActivity {
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         layoutParams.setMargins(100, 25, 100, 0);
 
+        Button refresh = new Button(this);
+        refresh.setText("Refresh");
+        refresh.setBackgroundColor(Color.RED);
+        refresh.setTextColor(Color.WHITE);
+
+        ll.addView(refresh, layoutParams);
+        refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createBotList();
+            }
+        });
+
+
         CommandDatabase commandDatabase = new CommandDatabase(this.getApplicationContext());
         ArrayList<String> uuids = commandDatabase.getUUIDsFromDatabase();
         Log.e("UUID: ", uuids.get(0));
