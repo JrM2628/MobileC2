@@ -1,8 +1,11 @@
 package c2.mobile.mobilec2;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.widget.NestedScrollView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private static final String TAG = "ServerSocketTest";
     private CommandDatabase commandDatabase;
+    private LinearLayout ll;
 
     Runnable conn = new Runnable() {
         public void run() {
@@ -36,30 +40,43 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.e("context: ", getApplicationContext().toString());
-
+        setContentView(R.layout.activity_main);
         new Thread(conn).start();
         commandDatabase = new CommandDatabase(getApplicationContext());
+        ll = (LinearLayout) findViewById(R.id.linearLayout);
 
         createBotList();
+        refreshBotList();
     }
 
-    public void createBotList() {
-        ScrollView scrollView = new ScrollView(this);
-        final LinearLayout ll = new LinearLayout(this);
+    public void refreshBotList(){
+        SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout) findViewById(R.id.refreshLayout);
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Log.e("REFRESH", "Refreshing the bot list");
+                ll.removeAllViews();
+                swipeLayout.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE, Color.CYAN);
+                createBotList();
+                swipeLayout.setRefreshing(false);
+            }
+        });
+    }
+
+    public void createBotList () {
         ll.setOrientation(LinearLayout.VERTICAL);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         layoutParams.setMargins(100, 25, 100, 0);
-        scrollView.addView(ll);
 
         CommandDatabase commandDatabase = new CommandDatabase(this.getApplicationContext());
         ArrayList<String> uuids = commandDatabase.getUUIDsFromDatabase();
-        for(int i = 0; i < uuids.size(); i++){
+        Log.e("UUID: ", uuids.get(0));
+        for (int i = 0; i < uuids.size(); i++) {
             String uuid = uuids.get(i);
 
             Button add_btn = new Button(this);
@@ -74,9 +91,6 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
-            this.setContentView(scrollView);
         }
     }
-
-
 }

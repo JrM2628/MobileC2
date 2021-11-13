@@ -29,25 +29,17 @@ public class SendCommand extends AppCompatActivity {
 
         Intent intent = getIntent();
         uuid = intent.getStringExtra("uuid");
-        Log.e("ahhhhh command shit uuid: ", uuid);
-
     }
 
     public void addCommandToDatabase(View v) {
         EditText command = (EditText) findViewById(R.id.command);
-//        EditText uuidEditText = (EditText) findViewById(R.id.uuidEditText);
 
         String cmd = command.getText().toString();
-//        String uuid = uuidEditText.getText().toString();
-
         CommandDatabase commandDatabase = new CommandDatabase(getApplicationContext());
         commandDatabase.updateDatabase(uuid, cmd, "");
     }
 
     public void viewOutput (View v) {
-//        EditText uuidEditText = (EditText) findViewById(R.id.uuidEditText);
-//        String uuid = uuidEditText.getText().toString();
-
         Intent i = new Intent(this, DisplayOutput.class);
         Log.e("UUID: ", uuid);
         i.putExtra("uuid", uuid);
