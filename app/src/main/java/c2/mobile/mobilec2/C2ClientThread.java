@@ -49,11 +49,14 @@ public class C2ClientThread extends Thread {
                             out.println(uuid.toString());
                             break;
                         case "set-uuid":
-                            this.uuid = UUID.randomUUID();
+                            String uuidString = in.readLine();
+                            this.uuid = UUID.fromString(uuidString);
+                            Log.e("Set UUID", uuid.toString());
                             break;
                         case "new-uuid":
                             this.uuid = UUID.randomUUID();
                             boolean bool = commandDatabase.insertIntoDatabase(uuid.toString(), "", "");
+                            Log.e("New UUID", uuid.toString());
                             break;
                         case "heartbeat":
                             //str should be heartbeat
