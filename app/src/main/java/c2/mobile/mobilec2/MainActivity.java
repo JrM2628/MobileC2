@@ -3,6 +3,7 @@ package c2.mobile.mobilec2;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -57,6 +58,20 @@ public class MainActivity extends AppCompatActivity {
         layoutParams.setMargins(100, 25, 100, 0);
         scrollView.addView(ll);
 
+        Button refresh = new Button(this);
+        refresh.setText("Refresh");
+        refresh.setBackgroundColor(Color.RED);
+        refresh.setTextColor(Color.WHITE);
+
+        ll.addView(refresh, layoutParams);
+        refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createBotList();
+            }
+        });
+
+
         CommandDatabase commandDatabase = new CommandDatabase(this.getApplicationContext());
         ArrayList<String> uuids = commandDatabase.getUUIDsFromDatabase();
         for(int i = 0; i < uuids.size(); i++){
@@ -77,6 +92,4 @@ public class MainActivity extends AppCompatActivity {
             this.setContentView(scrollView);
         }
     }
-
-
 }
