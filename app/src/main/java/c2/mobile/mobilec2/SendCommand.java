@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -29,6 +30,8 @@ public class SendCommand extends AppCompatActivity {
 
         Intent intent = getIntent();
         uuid = intent.getStringExtra("uuid");
+        TextView uuidDisplay = findViewById(R.id.uuid);
+        uuidDisplay.setText(uuid);
     }
 
     public void addCommandToDatabase(View v) {

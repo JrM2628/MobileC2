@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
-        android:layout_marginTop="276dp"
+        android:layout_marginTop="296dp"
         android:layout_marginEnd="101dp"
         android:ems="10"
         android:inputType="textPersonName"
@@ -19,34 +19,50 @@
         android:text="Command"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/sendCommand"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="126dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="127dp"
-        android:onClick="addCommandToDatabase"
-        android:text="Send Command"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/command" />
 
     <Button
         android:id="@+id/viewOutput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="137dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="137dp"
+        android:layout_marginBottom="259dp"
         android:onClick="viewOutput"
         android:text="View Output"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sendCommand" />
+        app:layout_constraintTop_toBottomOf="@+id/sendCommand"
+        app:layout_constraintVertical_bias="0.25" />
+
+    <Button
+        android:id="@+id/sendCommand"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="126dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="127dp"
+        android:onClick="addCommandToDatabase"
+        android:text="Send Command"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/command" />
+
+    <TextView
+        android:id="@+id/uuid"
+        android:layout_width="384dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="68dp"
+        android:layout_marginEnd="16dp"
+        android:text="TextView"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
